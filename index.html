@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dinidu de alwis</title>
+  <meta name="description" content="implementation portfolio for dinidu de alwis">
+  <meta name="theme-color" content="#f3efe7">
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap");
+
+    :root {
+      --page: #f3efe7;
+      --page-alt: #ebe4d8;
+      --panel: rgba(255, 252, 248, 0.92);
+      --panel-strong: #fffdfa;
+      --surface: rgba(255, 255, 255, 0.78);
+      --surface-strong: #ffffff;
+      --border: rgba(43, 36, 31, 0.12);
+      --text: #1e1a16;
+      --muted: #62584e;
+      --accent: #0d5c63;
+      --accent-strong: #0a4146;
+      --shadow: 0 18px 50px rgba(39, 31, 24, 0.08);
+      --selection-text: #fffdf8;
+      --button-text: #fffdf8;
+      --button-bg: var(--accent);
+      --button-border: rgba(13, 92, 99, 0.28);
+      --backdrop: rgba(239, 231, 218, 0.9);
+      --font-stack: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+      --title-size: clamp(3.1rem, 7vw, 5.7rem);
+      --lede-size: 1.18rem;
+      --card-radius: 1rem;
+      --frame-radius: 1.35rem;
+      --frame-padding: 1.4rem;
+      --card-padding: 0.95rem;
+      --gate-radius: 0.95rem;
+      --gate-padding: 1.05rem;
+      --mode-outline: 0 0 0 0 transparent;
+      --capsule-bg: rgba(255, 255, 255, 0.72);
+      --capsule-shadow: none;
+    }
+
+    body[data-theme="dark"] {
+      --page: #171411;
+      --page-alt: #0f0d0b;
+      --panel: rgba(29, 24, 20, 0.92);
+      --panel-strong: #221c17;
+      --surface: rgba(255, 255, 255, 0.04);
+      --surface-strong: rgba(255, 255, 255, 0.06);
+      --border: rgba(255, 245, 232, 0.1);
+      --text: #f6efe5;
+      --muted: #c8bbac;
+      --accent: #7ee0cf;
+      --accent-strong: #b2f4e8;
+      --shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+      --selection-text: #0d1113;
+      --button-text: #0d1113;
+      --button-bg: #7ee0cf;
+      --button-border: rgba(126, 224, 207, 0.32);
+      --backdrop: rgba(18, 15, 12, 0.9);
+      --capsule-bg: rgba(255, 255, 255, 0.04);
+    }
+
+    body[data-mode="juvenile"] {
+      --page: #ffef5c;
+      --page-alt: #ff8ae2;
+      --panel: rgba(0, 255, 255, 0.85);
+      --panel-strong: rgba(255, 125, 0, 0.96);
+      --surface: rgba(255, 255, 255, 0.35);
+      --surface-strong: rgba(255, 0, 179, 0.2);
+      --border: rgba(40, 0, 80, 0.52);
+      --text: #17002b;
+      --muted: #4f147a;
+      --accent: #ff1d58;
+      --accent-strong: #0b0bff;
+      --shadow: 0 14px 0 rgba(95, 0, 105, 0.28);
+      --selection-text: #fff200;
+      --button-text: #fff200;
+      --button-bg: #0b0bff;
+      --button-border: rgba(11, 11, 255, 0.36);
+      --font-stack: "Comic Neue", "Comic Sans MS", "Comic Sans", "Chalkboard SE", "Marker Felt", "Trebuchet MS", cursive;
+      --title-size: clamp(3.4rem, 8vw, 6.5rem);
+      --lede-size: 1.24rem;
+      --card-radius: 0.3rem;
+      --frame-radius: 0.45rem;
+      --card-padding: 0.85rem;
+      --gate-radius: 0.35rem;
+      --gate-padding: 0.8rem;
+      --mode-outline: 6px dashed #15ff00;
+      --capsule-bg: rgba(255, 255, 255, 0.45);
+      --capsule-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.35);
+    }
+
+    body[data-mode="juvenile"][data-theme="dark"] {
+      --page: #260048;
+      --page-alt: #0017b8;
+      --panel: rgba(255, 255, 0, 0.9);
+      --panel-strong: rgba(255, 0, 128, 0.96);
+      --surface: rgba(255, 255, 255, 0.12);
+      --surface-strong: rgba(255, 255, 255, 0.16);
+      --border: rgba(255, 255, 0, 0.45);
+      --text: #17002b;
+      --muted: #4f147a;
+      --accent: #00e5ff;
+      --accent-strong: #ff1d58;
+      --shadow: 0 14px 0 rgba(0, 0, 0, 0.24);
+      --button-text: #17002b;
+      --button-bg: #00e5ff;
+      --button-border: rgba(0, 229, 255, 0.36);
+    }
+
+    body[data-mode="juvenile"] {
+      animation: party-wall 9s linear infinite;
+      background:
+        radial-gradient(circle at 15% 18%, rgba(255, 255, 255, 0.48) 0 0.45rem, transparent 0.48rem),
+        radial-gradient(circle at 84% 14%, rgba(0, 255, 247, 0.46) 0 0.55rem, transparent 0.58rem),
+        repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0 0.8rem, transparent 0.8rem 1.6rem),
+        linear-gradient(135deg, var(--page) 0%, var(--page-alt) 100%);
+    }
+
+    @keyframes party-wall {
+      0% { background-position: 0 0, 0 0, 0 0, 0 0; }
+      100% { background-position: 2rem 1rem, -2rem 1.5rem, 4rem 0, 0 0; }
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
+      background:
+        linear-gradient(135deg, var(--page) 0%, var(--page-alt) 100%);
+      color: var(--text);
+      font-family: var(--font-stack);
+      text-transform: lowercase;
+      transition: background 220ms ease, color 220ms ease;
+    }
+
+    ::selection {
+      background: var(--accent);
+      color: var(--selection-text);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+      color: inherit;
+      text-transform: inherit;
+    }
+
+    .shell {
+      width: min(94rem, calc(100% - 2.5rem));
+      margin: 0 auto;
+      height: 100vh;
+      padding: 1.2rem 0;
+    }
+
+    .frame {
+      position: relative;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      height: 100%;
+      overflow: clip;
+      border: 1px solid var(--border);
+      border-radius: var(--frame-radius);
+      padding: var(--frame-padding);
+      background: var(--panel);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+      outline: var(--mode-outline);
+      outline-offset: -12px;
+    }
+
+    .topbar,
+    .content-grid {
+      position: relative;
+      z-index: 1;
+    }
+
+    .frame::before,
+    .frame::after {
+      content: "";
+      position: absolute;
+      inset: auto;
+      pointer-events: none;
+    }
+
+    .frame::before {
+      right: 1rem;
+      top: 1rem;
+      width: 10rem;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .frame::after {
+      left: 1rem;
+      bottom: 1rem;
+      width: calc(100% - 2rem);
+      height: 1px;
+      background: var(--border);
+    }
+
+    body[data-mode="juvenile"] .frame::before {
+      right: 0.6rem;
+      top: 0.75rem;
+      width: 9.5rem;
+      height: 3.1rem;
+      border-radius: 999px;
+      background:
+        radial-gradient(circle, rgba(255, 255, 255, 0.95) 0 0.16rem, transparent 0.18rem),
+        radial-gradient(circle, #ff00a8 0 0.34rem, transparent 0.38rem),
+        radial-gradient(circle, #00f7ff 0 0.58rem, transparent 0.64rem),
+        radial-gradient(circle, #ffee00 0 0.88rem, transparent 0.95rem);
+      background-position: 0.7rem 1.55rem, 2.6rem 1.2rem, 4.8rem 1.55rem, 7.1rem 1.35rem;
+      background-repeat: no-repeat;
+      filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.7));
+      opacity: 0.95;
+      animation: sparkle-bounce 1.5s steps(2, end) infinite;
+    }
+
+    body[data-mode="juvenile"] .frame::after {
+      left: 0.7rem;
+      bottom: 0.7rem;
+      width: 9rem;
+      height: 3.2rem;
+      border-radius: 999px;
+      background:
+        radial-gradient(circle at 24% 45%, #ff4d00 0 0.8rem, transparent 0.82rem),
+        radial-gradient(circle at 54% 42%, #ffea00 0 0.84rem, transparent 0.86rem),
+        radial-gradient(circle at 80% 44%, #00f7ff 0 0.8rem, transparent 0.82rem);
+      box-shadow:
+        inset 0 -0.55rem 0 rgba(100, 0, 120, 0.22),
+        0 0 18px rgba(255, 255, 0, 0.45);
+      opacity: 0.92;
+      animation: balloon-float 2.8s ease-in-out infinite;
+    }
+
+    @keyframes sparkle-bounce {
+      50% { transform: translateY(-0.18rem) rotate(-2deg); }
+    }
+
+    @keyframes balloon-float {
+      50% { transform: translateY(-0.28rem) translateX(0.15rem); }
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--muted);
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 1.6rem;
+      height: 1px;
+      background: currentColor;
+    }
+
+    h1,
+    h2,
+    p {
+      margin: 0;
+    }
+
+    h1 {
+      max-width: 13ch;
+      font-size: var(--title-size);
+      line-height: 0.9;
+      font-weight: 400;
+      letter-spacing: -0.03em;
+    }
+
+    .lede {
+      max-width: 38rem;
+      color: var(--muted);
+      font-size: var(--lede-size);
+      line-height: 1.5;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.18fr) minmax(22rem, 0.82fr);
+      gap: 1.2rem;
+      min-height: 0;
+      margin-top: 1rem;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: end;
+      gap: 0.65rem;
+    }
+
+    .mobile-controls {
+      display: none;
+    }
+
+    .segmented {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      padding: 0.25rem;
+      border: 1px solid var(--border);
+      border-radius: var(--card-radius);
+      background: var(--surface);
+    }
+
+    .segmented button,
+    .theme-button,
+    .gate-card button {
+      border: 1px solid transparent;
+      border-radius: var(--card-radius);
+      cursor: pointer;
+      transition: background 160ms ease, color 160ms ease, border-color 160ms ease, transform 160ms ease;
+    }
+
+    .segmented button {
+      padding: 0.45rem 0.8rem;
+      background: transparent;
+      color: var(--muted);
+    }
+
+    .segmented button.is-active {
+      background: var(--button-bg);
+      color: var(--button-text);
+      border-color: var(--button-border);
+    }
+
+    .theme-button {
+      padding: 0.48rem 0.8rem;
+      border-color: var(--border);
+      background: var(--surface);
+      color: var(--muted);
+    }
+
+    .theme-button svg {
+      width: 1rem;
+      height: 1rem;
+      display: block;
+      fill: currentColor;
+    }
+
+    .theme-button-icon {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 2.4rem;
+      height: 2.4rem;
+      padding: 0;
+    }
+
+    .growup-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.35rem 0.4rem 0.35rem 0.8rem;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--muted);
+      cursor: pointer;
+      transition: background 160ms ease, border-color 160ms ease, transform 160ms ease, color 160ms ease;
+    }
+
+    .growup-toggle:hover {
+      transform: translateY(-1px);
+      border-color: var(--accent);
+    }
+
+    .growup-label {
+      display: inline-flex;
+      align-items: center;
+      min-height: 1.5rem;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+    }
+
+    .growup-switch {
+      position: relative;
+      width: 2.55rem;
+      height: 1.5rem;
+      border-radius: 999px;
+      background: var(--border);
+      transition: background 160ms ease;
+    }
+
+    .growup-switch::after {
+      content: "";
+      position: absolute;
+      top: 0.16rem;
+      left: 0.18rem;
+      width: 1.18rem;
+      height: 1.18rem;
+      border-radius: 999px;
+      background: var(--panel-strong);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.16);
+      transition: transform 160ms ease;
+    }
+
+    .growup-toggle.is-adult {
+      color: var(--text);
+    }
+
+    .growup-toggle.is-adult .growup-switch {
+      background: var(--button-bg);
+    }
+
+    .growup-toggle.is-adult .growup-switch::after {
+      transform: translateX(1rem);
+      background: var(--button-text);
+    }
+
+    .party-chaos {
+      display: none;
+    }
+
+    body[data-mode="juvenile"] .party-chaos {
+      position: absolute;
+      inset: 0;
+      display: block;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .burst,
+    .balloon,
+    .sticker {
+      position: absolute;
+    }
+
+    .burst {
+      width: 5.2rem;
+      aspect-ratio: 1;
+      clip-path: polygon(50% 0%, 62% 26%, 92% 8%, 75% 38%, 100% 50%, 75% 62%, 92% 92%, 62% 74%, 50% 100%, 38% 74%, 8% 92%, 25% 62%, 0% 50%, 25% 38%, 8% 8%, 38% 26%);
+      opacity: 0.88;
+      animation: burst-spin 7s linear infinite;
+    }
+
+    .burst-1 {
+      top: 5.6rem;
+      right: 5rem;
+      background: linear-gradient(135deg, #ffee00, #ff4d00);
+    }
+
+    .burst-2 {
+      bottom: 5.3rem;
+      left: 6rem;
+      width: 4.2rem;
+      background: linear-gradient(135deg, #00e5ff, #00ff6a);
+      animation-duration: 5.4s;
+    }
+
+    .balloon {
+      width: 2.8rem;
+      height: 3.5rem;
+      border-radius: 55% 55% 50% 50%;
+      box-shadow: inset -0.32rem -0.5rem 0 rgba(0, 0, 0, 0.12);
+      animation: balloon-party 3.8s ease-in-out infinite;
+    }
+
+    .balloon::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: calc(100% - 0.15rem);
+      width: 1px;
+      height: 2.4rem;
+      background: rgba(68, 13, 98, 0.75);
+    }
+
+    .balloon-1 {
+      right: 1.4rem;
+      top: 10.8rem;
+      background: #ffea00;
+    }
+
+    .balloon-2 {
+      right: 4.2rem;
+      top: 12.6rem;
+      background: #ff4d00;
+      animation-delay: -0.8s;
+    }
+
+    .balloon-3 {
+      left: 1.8rem;
+      bottom: 6.1rem;
+      background: #00f7ff;
+      animation-delay: -1.4s;
+    }
+
+    .sticker {
+      padding: 0.25rem 0.55rem;
+      border: 2px solid rgba(45, 0, 87, 0.6);
+      border-radius: 0.25rem;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      box-shadow: 0 0.32rem 0 rgba(84, 0, 79, 0.2);
+      animation: sticker-jitter 1.2s steps(2, end) infinite;
+    }
+
+    .sticker-1 {
+      top: 5.5rem;
+      left: 1.4rem;
+      background: #fffb00;
+      color: #12002b;
+      transform: rotate(-8deg);
+    }
+
+    .sticker-2 {
+      bottom: 2.9rem;
+      right: 9.3rem;
+      background: #00ff6a;
+      color: #12002b;
+      transform: rotate(6deg);
+      animation-delay: -0.35s;
+    }
+
+    @keyframes burst-spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes balloon-party {
+      50% { transform: translateY(-0.45rem) rotate(2deg); }
+    }
+
+    @keyframes sticker-jitter {
+      50% { transform: translateY(-0.08rem) rotate(-3deg) scale(1.04); }
+    }
+
+    .theme-button:hover,
+    .segmented button:hover,
+    .gate-card button:hover {
+      transform: translateY(-1px);
+    }
+
+    .hero-copy {
+      display: grid;
+      gap: 0.9rem;
+      align-content: start;
+    }
+
+    .contact-list {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.7rem;
+      margin-top: auto;
+    }
+
+    .contact-card,
+    .work-card {
+      display: block;
+      border: 1px solid var(--border);
+      border-radius: var(--card-radius);
+      padding: var(--card-padding);
+      background: var(--capsule-bg);
+      box-shadow: var(--capsule-shadow);
+      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+    }
+
+    .contact-card:hover,
+    .work-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent);
+      background: var(--surface-strong);
+    }
+
+    .label {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.9rem;
+      height: 1.9rem;
+      margin-bottom: 0.45rem;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--muted);
+      background: var(--surface);
+    }
+
+    .value {
+      display: block;
+      font-size: 0.93rem;
+      line-height: 1.35;
+    }
+
+    .label svg {
+      width: 1rem;
+      height: 1rem;
+      display: block;
+      fill: currentColor;
+    }
+
+    .left-column,
+    .right-column {
+      min-height: 0;
+      display: grid;
+    }
+
+    .left-column {
+      grid-template-rows: 1fr auto;
+      gap: 0.9rem;
+    }
+
+    .right-column {
+      grid-template-rows: auto 1fr;
+      gap: 0.85rem;
+      padding: 0.15rem 0 0;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    body:not([data-mode="juvenile"]) .hero-copy,
+    body:not([data-mode="juvenile"]) .left-column,
+    body:not([data-mode="juvenile"]) .right-column,
+    body:not([data-mode="juvenile"]) .works {
+      gap: 0.9rem;
+    }
+
+    body:not([data-mode="juvenile"]) .contact-list {
+      margin-left: -0.4rem;
+    }
+
+    body:not([data-mode="juvenile"]) .contact-card {
+      padding-top: 0.82rem;
+      padding-right: 0.9rem;
+      padding-bottom: 0.82rem;
+      padding-left: 0.82rem;
+    }
+
+    h2 {
+      font-size: 1.1rem;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+    }
+
+    .works {
+      display: grid;
+      align-content: start;
+      gap: 0.75rem;
+      min-height: 0;
+    }
+
+    .work-card {
+      height: 100%;
+      padding: 1rem;
+      background: var(--panel-strong);
+    }
+
+    .work-top {
+      display: flex;
+      gap: 1rem;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 0.65rem;
+    }
+
+    .work-title {
+      font-size: 1.05rem;
+      line-height: 1.3;
+    }
+
+    .work-copy {
+      color: var(--muted);
+      line-height: 1.5;
+      max-width: 46ch;
+      font-size: 0.95rem;
+    }
+
+    .work-host {
+      margin-top: 0.85rem;
+      color: var(--muted);
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+    }
+
+    .gate {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      display: grid;
+      place-items: center;
+      padding: 1rem;
+      background: var(--backdrop);
+      backdrop-filter: blur(8px);
+      transition: opacity 220ms ease, visibility 220ms ease;
+    }
+
+    body.mode-chosen .gate {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .gate-card {
+      width: min(48rem, 100%);
+      padding: var(--gate-padding);
+      border: 1px solid var(--border);
+      border-radius: var(--gate-radius);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .gate-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      color: var(--muted);
+      font-size: 0.8rem;
+      letter-spacing: 0.18em;
+    }
+
+    .gate-label::before {
+      content: "";
+      width: 2.2rem;
+      height: 1px;
+      background: currentColor;
+    }
+
+    .gate-title {
+      margin-top: 0.85rem;
+      font-size: clamp(2.35rem, 7vw, 4.4rem);
+      line-height: 0.94;
+      font-weight: 400;
+      letter-spacing: -0.04em;
+      max-width: 12ch;
+    }
+
+    .gate-copy {
+      max-width: 38rem;
+      margin-top: 0.85rem;
+      color: var(--muted);
+      font-size: 0.98rem;
+      line-height: 1.58;
+    }
+
+    .gate-actions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.9rem;
+      margin-top: 1.5rem;
+    }
+
+    .gate-card button {
+      padding: 0.82rem 0.92rem;
+      text-align: left;
+      border-color: var(--border);
+      background: var(--surface);
+    }
+
+    .gate-option-name {
+      display: block;
+      font-size: 1.02rem;
+      color: var(--text);
+    }
+
+    .gate-option-note {
+      display: block;
+      margin-top: 0.45rem;
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 920px) {
+      .shell {
+        width: min(100% - 1rem, 72rem);
+      }
+
+      .content-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .left-column,
+      .right-column {
+        gap: 0.9rem;
+      }
+
+      .contact-list {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        margin-top: 0;
+      }
+
+      h1 {
+        max-width: none;
+      }
+
+      body[data-mode="juvenile"] .burst-1 {
+        top: 6.8rem;
+        right: 1.8rem;
+      }
+
+      body[data-mode="juvenile"] .balloon-1,
+      body[data-mode="juvenile"] .balloon-2 {
+        display: none;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .shell {
+        width: min(100% - 1rem, 72rem);
+        height: auto;
+        min-height: 100vh;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+      }
+
+      body {
+        height: auto;
+        min-height: 100vh;
+        overflow: auto;
+      }
+
+      .frame {
+        height: auto;
+        min-height: calc(100vh - 1rem);
+        padding: 0.9rem;
+        border-radius: 1rem;
+        outline: 0;
+      }
+
+      .topbar,
+      .section-head,
+      .work-top {
+        flex-direction: column;
+      }
+
+      .content-grid {
+        display: block;
+      }
+
+      .controls {
+        display: none;
+      }
+
+      .mobile-controls {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+      }
+
+      .controls {
+        justify-content: start;
+      }
+
+      .contact-list {
+        grid-template-columns: 1fr 1fr;
+        grid-auto-rows: 2.4rem;
+        margin-top: 1rem;
+      }
+
+      body:not([data-mode="juvenile"]) .contact-list {
+        margin-left: -0.3rem;
+      }
+
+      .contact-card {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        min-height: 0;
+        height: 100%;
+        padding-top: 0.25rem;
+        padding-bottom: 0.25rem;
+      }
+
+      body:not([data-mode="juvenile"]) .contact-card {
+        padding-top: 0.34rem;
+        padding-right: 0.72rem;
+        padding-bottom: 0.34rem;
+        padding-left: 0.58rem;
+      }
+
+      .label {
+        margin-bottom: 0;
+        flex: 0 0 auto;
+        width: 1.7rem;
+        height: 1.7rem;
+      }
+
+      .value {
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        min-height: 1.7rem;
+      }
+
+      .gate-card {
+        padding: 0.9rem;
+        border-radius: var(--gate-radius);
+      }
+
+      .gate-actions {
+        grid-template-columns: 1fr;
+      }
+
+      .theme-button-text {
+        display: none;
+      }
+
+      .theme-button-icon {
+        display: inline-flex;
+      }
+
+      .section-head {
+        padding-top: 0.9rem;
+      }
+
+      .gate-title {
+        font-size: clamp(2rem, 12vw, 3rem);
+      }
+
+      .gate-copy {
+        font-size: 0.92rem;
+      }
+
+      body[data-mode="juvenile"] .burst {
+        width: 3.3rem;
+      }
+
+      body[data-mode="juvenile"] .burst-2,
+      body[data-mode="juvenile"] .sticker-2,
+      body[data-mode="juvenile"] .balloon-3 {
+        display: none;
+      }
+
+      body[data-mode="juvenile"] .sticker-1 {
+        top: 4.8rem;
+        left: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <section class="gate" aria-labelledby="gate-title">
+    <div class="gate-card">
+      <div class="gate-label">portfolio</div>
+      <h1 class="gate-title" id="gate-title">dinidu de alwis</h1>
+      <p class="gate-copy">
+        <br>same person, differently interpreted. pick your flavour. if this is your first time playing, <b>reasonable adult</b> is recommended.
+      </p>
+      <div class="gate-actions">
+        <button type="button" data-mode-choice="adult">
+          <span class="gate-option-name">reasonable adult</span>
+          <span class="gate-option-note">fit for committees, polite strangers, and grown-up people with funding authority who wear lanyards with conviction.</span>
+        </button>
+        <button type="button" data-mode-choice="juvenile">
+          <span class="gate-option-name">unhinged juvenile</span>
+          <span class="gate-option-note">the full experience, fit for those who are doing due diligence or a background checks because I said something that made someone angry.</span>
+        </button>
+      </div>
+    </div>
+  </section>
+  <main class="shell">
+    <section class="frame">
+      <div class="party-chaos" aria-hidden="true">
+        <span class="burst burst-1"></span>
+        <span class="burst burst-2"></span>
+        <span class="balloon balloon-1"></span>
+        <span class="balloon balloon-2"></span>
+        <span class="balloon balloon-3"></span>
+        <span class="sticker sticker-1">wow!!!</span>
+        <span class="sticker sticker-2">so serious</span>
+      </div>
+      <div class="topbar">
+        <div class="eyebrow" data-copy="eyebrow">portfolio</div>
+        <div class="controls">
+          <div class="segmented" role="tablist" aria-label="voice">
+            <button type="button" data-mode-option="adult" role="tab" aria-selected="false">reasonable adult</button>
+            <button type="button" data-mode-option="juvenile" role="tab" aria-selected="false">unhinged juvenile</button>
+          </div>
+          <button class="theme-button theme-button-text" type="button" id="theme-toggle" aria-pressed="false">switch to light</button>
+        </div>
+        <div class="mobile-controls">
+          <button class="growup-toggle" type="button" id="growup-toggle" aria-pressed="false">
+            <span class="growup-label">grow up</span>
+            <span class="growup-switch" aria-hidden="true"></span>
+          </button>
+          <button class="theme-button theme-button-icon" type="button" id="theme-toggle-mobile-standalone" aria-pressed="false" aria-label="toggle dark mode">
+            <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
+              <path d="M12 3.2 14.04 7l4.16.48-2.84 2.92.72 4.1L12 12.64 7.92 14.5l.72-4.1L5.8 7.48 9.96 7Zm0 4.06-.86 1.6-1.8.2 1.22 1.26-.3 1.77L12 11.3l1.74.8-.3-1.77 1.22-1.26-1.8-.2ZM18.2 15.4a.9.9 0 0 1 .9.9V18h1.7a.9.9 0 0 1 0 1.8h-1.7v1.7a.9.9 0 1 1-1.8 0v-1.7h-1.7a.9.9 0 1 1 0-1.8h1.7v-1.7a.9.9 0 0 1 .9-.9ZM6.2 15.7a3.5 3.5 0 1 0 3.5 3.5 3.5 3.5 0 0 0-3.5-3.5Zm0 1.8a1.7 1.7 0 1 1 0 3.4 1.7 1.7 0 0 1 0-3.4Z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="content-grid">
+        <section class="left-column">
+          <div class="hero-copy">
+            <h1>what do i do? tech stuff</h1>
+            <p class="lede" data-copy="lede"><br>
+              i build trilingual-by design free tools and services to support public access to governance, accountability, and civic engagement.
+            </p>
+          </div>
+
+          <section class="contact-list" aria-label="contact links">
+            <a class="contact-card" href="https://instagram.com/dinidu" target="_blank" rel="noopener noreferrer" aria-label="instagram">
+              <span class="label" aria-hidden="true">
+                <svg viewBox="0 0 24 24" role="img">
+                  <path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2Zm0 1.8A3.7 3.7 0 0 0 3.8 7.5v9a3.7 3.7 0 0 0 3.7 3.7h9a3.7 3.7 0 0 0 3.7-3.7v-9a3.7 3.7 0 0 0-3.7-3.7Zm9.45 1.35a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2ZM12 6.8A5.2 5.2 0 1 1 6.8 12 5.2 5.2 0 0 1 12 6.8Zm0 1.8A3.4 3.4 0 1 0 15.4 12 3.4 3.4 0 0 0 12 8.6Z"/>
+                </svg>
+              </span>
+              <span class="value">@dinidu</span>
+            </a>
+            <a class="contact-card" href="https://x.com/dinidu" target="_blank" rel="noopener noreferrer" aria-label="x / twitter">
+              <span class="label" aria-hidden="true">
+                <svg viewBox="0 0 24 24" role="img">
+                  <path d="M18.9 3H22l-6.76 7.73L23 21h-6.1l-4.78-6.25L6.65 21H3.53l7.23-8.26L1 3h6.25l4.32 5.72ZM17.8 19.1h1.72L6.31 4.8H4.46Z"/>
+                </svg>
+              </span>
+              <span class="value">@dinidu</span>
+            </a>
+            <a class="contact-card" href="https://patreon.com/dinidu" target="_blank" rel="noopener noreferrer" aria-label="patreon">
+              <span class="label" aria-hidden="true">
+                <svg viewBox="0 0 24 24" role="img">
+                  <path d="M14.5 3a6.5 6.5 0 1 1 0 13 6.5 6.5 0 0 1 0-13ZM4 4.5h3.2v15H4Z"/>
+                </svg>
+              </span>
+              <span class="value">support</span>
+            </a>
+            <a class="contact-card" href="mailto:me@dinidu.org" aria-label="email">
+              <span class="label" aria-hidden="true">
+                <svg viewBox="0 0 24 24" role="img">
+                  <path d="M3 5h18a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Zm0 2v.22L12 13l9-5.78V7Zm18 10V9.32l-8.48 5.44a1 1 0 0 1-1.04 0L3 9.32V17Z"/>
+                </svg>
+              </span>
+              <span class="value">me@dinidu.org</span>
+            </a>
+            <a class="contact-card" href="tel:+94777599211" aria-label="phone">
+              <span class="label" aria-hidden="true">
+                <svg viewBox="0 0 24 24" role="img">
+                  <path d="M6.62 10.79a15.1 15.1 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.59.57 1 1 0 0 1 1 1V21a1 1 0 0 1-1 1A18 18 0 0 1 2 4a1 1 0 0 1 1-1h4.49a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .57 3.59 1 1 0 0 1-.24 1Z"/>
+                </svg>
+              </span>
+              <span class="value">+94 777 599211</span>
+            </a>
+            <a class="contact-card" href="https://wa.me/94777599211" target="_blank" rel="noopener noreferrer" aria-label="whatsapp">
+              <span class="label" aria-hidden="true">
+                <svg viewBox="0 0 24 24" role="img">
+                  <path d="M12 2a9.8 9.8 0 0 0-8.46 14.74L2 22l5.42-1.42A9.8 9.8 0 1 0 12 2Zm0 17.8a8 8 0 0 1-4.08-1.12l-.29-.17-3.22.84.86-3.14-.19-.31A8 8 0 1 1 12 19.8Zm4.39-5.93c-.24-.12-1.4-.69-1.62-.77s-.38-.12-.54.12-.62.77-.76.93-.28.18-.52.06a6.58 6.58 0 0 1-1.94-1.2 7.27 7.27 0 0 1-1.35-1.68c-.14-.24 0-.37.1-.49s.24-.28.36-.42a1.62 1.62 0 0 0 .24-.4.45.45 0 0 0 0-.42c-.06-.12-.54-1.3-.74-1.78s-.4-.41-.54-.42H8.6a.72.72 0 0 0-.52.24 2.18 2.18 0 0 0-.68 1.62 3.81 3.81 0 0 0 .8 2.04 8.74 8.74 0 0 0 3.34 2.96 11.31 11.31 0 0 0 1.12.41 2.69 2.69 0 0 0 1.24.08 2 2 0 0 0 1.3-.91 1.6 1.6 0 0 0 .12-.92c-.05-.09-.21-.15-.45-.27Z"/>
+                </svg>
+              </span>
+              <span class="value">message</span>
+            </a>
+          </section>
+        </section>
+
+        <section class="right-column" aria-labelledby="works-heading">
+          <div class="section-head">
+            <h2 id="works-heading">major works</h2>
+          </div>
+
+          <div class="works">
+            <a class="work-card" href="https://rti.dinidu.org" target="_blank" rel="noopener noreferrer">
+              <div class="work-top">
+                <h3 class="work-title">tri-lingual right to information request generator</h3>
+              </div>
+              <p class="work-copy" data-copy="rti-copy">
+                a right to information request generator that helps people draft usable applications with ease. public authority information and contacts are automatically suggested, and the tool guides users through a simple Q&A to create requests in sinhala, tamil, and english.
+              </p>
+              <div class="work-host">rti.dinidu.org</div>
+            </a>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+  <script>
+    const copy = {
+      adult: {
+        eyebrow: "implementation portfolio",
+        lede: "i build compact public-interest web tools, usually around access to governance, and usually cheap enough to run without making a lifestyle out of hosting bills.",
+        "rti-copy": "a trilingual right to information request generator that helps people draft usable applications in sinhala, tamil, and english without making them wrestle a form designed by a minor sadist."
+      },
+      juvenile: {
+        eyebrow: "implementation portfolio, but less house-trained",
+        lede: "i make internet things with magic ai evangelist powers to make more better; and no - i will not build you a chatbot for your site or make you a waifu.",
+        "rti-copy": "a trilingual right to information request generator for people who need the state to answer a question in one of three languages and would prefer not to die inside while filling the thing out."
+      }
+    };
+
+    const copyTargets = document.querySelectorAll("[data-copy]");
+    const modeButtons = document.querySelectorAll("[data-mode-option]");
+    const gateButtons = document.querySelectorAll("[data-mode-choice]");
+    const themeToggle = document.getElementById("theme-toggle");
+    const themeToggleMobileStandalone = document.getElementById("theme-toggle-mobile-standalone");
+    const growupToggle = document.getElementById("growup-toggle");
+    const themeMeta = document.querySelector('meta[name="theme-color"]');
+    const root = document.body;
+
+    function applyMode(mode) {
+      const selected = copy[mode] ? mode : "adult";
+      root.dataset.mode = selected;
+      root.classList.add("mode-chosen");
+
+      copyTargets.forEach((node) => {
+        const key = node.dataset.copy;
+        if (copy[selected][key]) {
+          node.textContent = copy[selected][key];
+        }
+      });
+
+      modeButtons.forEach((button) => {
+        const active = button.dataset.modeOption === selected;
+        button.classList.toggle("is-active", active);
+        button.setAttribute("aria-selected", active ? "true" : "false");
+      });
+
+      if (growupToggle) {
+        const isAdult = selected === "adult";
+        growupToggle.classList.toggle("is-adult", isAdult);
+        growupToggle.setAttribute("aria-pressed", isAdult ? "true" : "false");
+      }
+
+      applyTheme(root.dataset.theme || "light");
+    }
+
+    function applyTheme(theme) {
+      const selected = theme === "light" ? "light" : "dark";
+      root.dataset.theme = selected;
+      if (themeToggle) {
+        themeToggle.textContent = selected === "dark" ? "switch to light" : "switch to dark";
+        themeToggle.setAttribute("aria-pressed", selected === "light" ? "true" : "false");
+      }
+      if (themeToggleMobileStandalone) {
+        themeToggleMobileStandalone.setAttribute("aria-pressed", selected === "light" ? "true" : "false");
+      }
+      if (root.dataset.mode === "juvenile") {
+        themeMeta.setAttribute("content", selected === "dark" ? "#260048" : "#ffef5c");
+      } else {
+        themeMeta.setAttribute("content", selected === "dark" ? "#171411" : "#f3efe7");
+      }
+    }
+
+    gateButtons.forEach((button) => {
+      button.addEventListener("click", () => applyMode(button.dataset.modeChoice));
+    });
+
+    modeButtons.forEach((button) => {
+      button.addEventListener("click", () => applyMode(button.dataset.modeOption));
+    });
+
+    themeToggle.addEventListener("click", () => {
+      applyTheme(root.dataset.theme === "dark" ? "light" : "dark");
+    });
+
+    if (themeToggleMobileStandalone) {
+      themeToggleMobileStandalone.addEventListener("click", () => {
+        applyTheme(root.dataset.theme === "dark" ? "light" : "dark");
+      });
+    }
+
+    if (growupToggle) {
+      growupToggle.addEventListener("click", () => {
+        applyMode(root.dataset.mode === "adult" ? "juvenile" : "adult");
+      });
+    }
+
+    const preferredDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+    applyTheme(preferredDark ? "dark" : "light");
+  </script>
+</body>
+</html>
